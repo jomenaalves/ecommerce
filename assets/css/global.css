@@ -1,0 +1,21 @@
+*,*::after,*::before{
+    padding: 0; margin: 0; box-sizing: border-box;
+}
+body,html{
+    background-color: #f3f4f5;
+    font-family: 'Poppins';
+}
+a{
+    text-decoration: none;
+}
+button{
+    cursor: pointer;
+    border: none;
+}
+
+.loading{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}

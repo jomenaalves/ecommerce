@@ -1,0 +1,61 @@
+header{
+  width: 100%;
+  background-color: #008932;
+  color: #fff;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  padding: 0 80px;
+}
+
+.setCep button{
+  padding: 10px 15px;
+  text-transform: uppercase;
+}
+.products{
+  max-width: 980px;
+  margin: 40px auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product{
+  width: 190px;
+  border: 1px solid #ccc;
+  margin-right: 5px;
+  margin-top: 10px;
+  padding: 10px;
+}
+.product button{
+  width: 100%;
+  background-color: #008932;
+  color: #fff;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.modalpayment{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.349);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentModalPayment{
+  width: 600px;
+  height: 600px;
+  background-color: #fff;
+  padding: 30px;
+}
+
+.flags img{
+  margin-right: 10px;
+}

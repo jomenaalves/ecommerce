@@ -1,0 +1,82 @@
+.container-login{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content-login{
+  border: 1px solid #ccc;
+  width: 400px;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 30px 50px 50px;
+}
+
+.apresentation{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.apresentation p{
+  margin-top: 10px;
+  font-weight: 300;
+  font-size: 20px;
+  color: #212121;
+}
+.apresentation span{
+  color: #878a88;
+  font-weight: 300;
+  font-size: 12px;
+}
+
+form{
+  width: 100%;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.form-control{
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control label{
+  margin-top: 7px;
+  color: #878a88;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.form-control input{
+  padding: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.form-control input:focus{
+  border: 1px solid #2121218f;
+  border-radius: 1px;
+}
+
+form button[type="submit"]{
+  background-color: #008932;
+  margin-top: 10px;
+  padding: 14px;
+  color: #fff;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+p.error{
+  text-align: center;
+  color: rgb(245, 62, 62);
+  font-weight: 300;
+  font-size: 14px;
+}
