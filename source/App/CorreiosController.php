@@ -57,7 +57,8 @@ class CorreiosController
     return $result ? $result->cServico : false;
   }
 
-  public function get($url){
+  public function get($url)
+  {
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

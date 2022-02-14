@@ -33,5 +33,4 @@ class LoginController
       "title" => 'Aréa Administrativa  - Ecommerce N soluções',
     ]);
   }
-
 }

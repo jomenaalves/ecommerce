@@ -72,10 +72,10 @@ class ApiController
     $obCorreios = new CorreiosController();
 
     $frete = $obCorreios->calcFrete(COD_SERVICO, CEP_ORIGEM, $data['cep'], PESO, FORMATO, COMPRIMENTO, ALTURA, LARGURA, DIAMETRO);
-   
+
     $error = strlen($frete->Erro) > 1 ? true : false;
 
-    if(!$error){
+    if (!$error) {
       $this->setCEP($data['cep'], $frete->Valor);
 
       echo json_encode(['ok' => true]);
@@ -84,19 +84,17 @@ class ApiController
 
     echo json_encode(['ok' => false]);
     return;
-
-   
   }
 
   public function setCEP(String $cep, String $valor)
   {
 
-    try{
+    try {
       $_SESSION['cep'] = $cep;
       $_SESSION['valorFrete'] = $valor;
 
       return true;
-    }catch(\Exception){
+    } catch (\Exception) {
       return false;
     }
 
@@ -105,17 +103,15 @@ class ApiController
 
   public function removeCep()
   {
-    try{
+    try {
       unset($_SESSION['cep']);
       unset($_SESSION['valorFrete']);
 
       echo json_encode(true);
       return;
-    }catch(\Exception){
+    } catch (\Exception) {
       echo json_encode(false);
       return;
     }
   }
-
-
 }
