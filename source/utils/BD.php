@@ -43,6 +43,14 @@ class BD extends PDO
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getClient(Int $id){
+        $query = "SELECT * FROM all_clientes WHERE id = $id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function cadProduct(String $nome, String $valor)
     {
 
@@ -103,7 +111,14 @@ class BD extends PDO
         }
 
         return false;
-        
-       
+    
     }
+    public function getProductByID(Int $id){
+        $query = "SELECT * FROM products WHERE id = $id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 }

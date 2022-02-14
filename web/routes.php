@@ -25,7 +25,7 @@
     $router->post("/cadProduct", "ApiController:cadProduct");
     $router->post("/upProduct", "ApiController:upProduct");
     $router->delete("/delProduct/{id}", "ApiController:delProduct");
-
+    $router->post("/getProductByID", "ApiController:getProductByID");
     $router->get("/setCep/{cep}", "ApiController:setCEP");
     $router->get("/removeCep", "ApiController:removeCEP");
 
@@ -34,6 +34,8 @@
     // routes payment
     $router->get("/getSessionPayment", "PaymentController:getSession");
 
+    $router->post("/makePaymentWithCreditCard", "PaymentController:paymentCreditCard");
+    $router->post("/makePaymentWithBoleto", "PaymentController:paymentBoleto");
 
 
 

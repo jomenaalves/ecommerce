@@ -54,8 +54,45 @@ header{
   height: 600px;
   background-color: #fff;
   padding: 30px;
+  font-weight: 300;
 }
 
 .flags img{
   margin-right: 10px;
+}
+.boleto{
+  display: none;
+  padding: 10px;
+  flex-direction: column;
+}
+.boleto button{
+  width: 100%;
+  padding: 10px;
+}
+.credit_card{
+  display: none;
+  padding: 10px;
+  flex-direction: column;
+}
+
+.credit_card button{
+  padding: 10px;
+}
+.selectPayment{
+  display: flex;
+  flex-direction: column;
+}
+.radio{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.form-control{
+  display: flex;
+  flex-direction: column;
+}
+.form-control input{
+  padding: 10px;
 }

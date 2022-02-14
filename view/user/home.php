@@ -36,7 +36,6 @@
                     <div class="product">
                         <p>Nome: <?= $product['nome'];?></p>
                         <p>Valor: R$<?= $product['valor'] ?></p>
-
                         <button 
                             class="buy" 
                             data-id="<?= $product['id']?>"
@@ -47,12 +46,33 @@
             </div>
         <?php endif;?>
     </section>
-    <div class="modalpayment">
+    <div class="modalpayment" id="closeModal">
         <div class="contentModalPayment">
-            <p>Bandeiras</p>
-            <div class="flags"></div>
-            <p>Boleto</p>
-            <div class="boleto"></div>
+            <div class="selectPayment">
+                <div>
+                    <p>Escolha a forma de pagamento</p>
+                </div>
+                <div class="radio">
+                    <div>
+                        <label for="credit_card">Cartão de credito</label>
+                        <input type="radio" name="checkbox" id="credit_card">
+                    </div>
+                    <div>
+                        <label for="boleto">Boleto</label>
+                        <input type="radio" name="checkbox" id="boleto">
+                    </div>
+                </div>
+            </div>
+
+            <div class="credit_card" data-method="credit_card">
+                <p class="message"></p><br>
+                <button id="buyWithCreditCard">Comprar</button>
+            </div>
+            
+            <div class="boleto" data-method="boleto">
+                <div class="messageBoleto"></div>
+                <button id="buyWithBoleto">Comprar</button>
+            </div>
         </div>
     </div>
 <?php $this->end() ?>

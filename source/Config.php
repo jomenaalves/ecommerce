@@ -1,6 +1,6 @@
 <?php 
 
-    const PATH_OF_YOUR_APP = "https://localhost/Ecommerce/";
+    const PATH_OF_YOUR_APP = "http://localhost:3000/Ecommerce/";
 
 
     // DATABASE INFORMATION
@@ -24,3 +24,5 @@
     const TOKEN_PAGSEGURO = "87049D4ACF7C40C8ACAEFF93A99B3C79";
     const URL_PAGSEGURO = "https://ws.sandbox.pagseguro.uol.com.br/v2/";
     const SCRIPT_PAGSEGURO = "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js";
+    const EMAIL_LOJA = "jomenaalves@gmail.com";
+    const URL_NOTIFICATION = "https://localhost/Ecommerce";

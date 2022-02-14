@@ -5,14 +5,38 @@ class productController{
     this.removeCep = document.querySelector('#removeCep');
 
     this.btnBuy = document.querySelectorAll('.buy');
-
     this.modalPayments = document.querySelector('.modalpayment');
+    this.paymentsMethod = document.querySelectorAll('input[type="radio"]');
+    this.buyWithCreditCard = document.querySelector('#buyWithCreditCard');
+    this.buyWithBoleto = document.querySelector('#buyWithBoleto');
+    this.paymentMethod = "";
+    // sessão pagseguro
+    this.sessionID = "";
+    // hash pagseguro
+    this.hash = "";
+    this.token = "";
     this.initEvents();
 
   }
 
 
   async initEvents(){
+
+    this.paymentsMethod.forEach((element) => {
+      element.addEventListener('change', async () => {
+
+        const allDiv = document.querySelectorAll(`[data-method]`);
+        allDiv.forEach((element) => {
+          element.style.display = "none";
+        });
+
+        this.paymentMethod = element.id;
+        const reference = document.querySelector(`[data-method="${this.paymentMethod}"]`);
+
+        reference.style.display = "flex";
+      });
+    })
+
 
     if(this.btnSetCep){
       this.btnSetCep.addEventListener('click', async () => {
@@ -53,45 +77,143 @@ class productController{
     if(this.btnBuy){
       this.btnBuy.forEach((element) => {
         element.addEventListener('click', async (e) => {
-          const URL = "api/getSessionPayment";
-          const request = await fetch(URL);
-          const {id} = await request.json();
-
           this.modalPayments.style.display = "flex";
-          PagSeguroDirectPayment.setSessionId(id);
-          PagSeguroDirectPayment.getPaymentMethods({
-            amount: 500.00,
-            success: function(response) {
-              const creditCardFlags = document.querySelector('.flags');
-              const boletoDiv = document.querySelector('.boleto');
-
-              const optionsCreditCard = response.paymentMethods.CREDIT_CARD.options;
-              const optionBoleto = response.paymentMethods.BOLETO.options;
-
-              Object.values(optionBoleto).forEach((boleto) => {
-                console.log(boleto);
-                boletoDiv.innerHTML += `<img src="https://stc.pagseguro.uol.com.br${boleto.images.SMALL.path}"/>`;
-              });
-              console.log(optionBoleto);
-              Object.values(optionsCreditCard).forEach((card) => {
-                creditCardFlags.innerHTML += `<img src="https://stc.pagseguro.uol.com.br${card.images.SMALL.path}"/>`;
-              });
-          
-            },
-            error: function(response) {
-                console.log(response);
-            },
-            complete: function(response) {
-              
-            }
-        });
+          this.modalPayments.setAttribute('data-item', element.dataset.id);
         })
-      })
+      });
     }
+
+    this.modalPayments.addEventListener('click', (e) => {
+      if(e.target.id == "closeModal"){
+        this.modalPayments.style.display = "none";
+      }
+    })
+
+    this.buyWithCreditCard.addEventListener('click', async () => {
+      document.querySelector('.message').innerHTML = "Carregando...";
+      this.makePaymentWithCreditCard(this.modalPayments.dataset.item);
+    });
+
+    this.buyWithBoleto.addEventListener('click', () => {
+      document.querySelector('.messageBoleto').innerHTML = "Carregando...";
+      this.makePaymentWithBoleto(this.modalPayments.dataset.item);
+    })
+
 
 
   }
 
+  createSession() {
+
+  }
+  async makePaymentWithCreditCard(idProduct){
+
+    const URL = "api/getSessionPayment";
+    const request = await fetch(URL);
+    const {id} = await request.json();
+    
+    PagSeguroDirectPayment.setSessionId(id);
+
+  
+    // static data
+    const CREDIT_CARD_INFO = {
+      'cardNumber' :'4111111111111111',
+      'brand' : 'visa',
+      'cvv' : '123',
+      'expirationMonth' : '12',
+      'expirationYear' : 2030
+    };
+
+    PagSeguroDirectPayment.createCardToken({
+      cardNumber: CREDIT_CARD_INFO.cardNumber, 
+      brand: CREDIT_CARD_INFO.brand, 
+      cvv: CREDIT_CARD_INFO.cvv, 
+      expirationMonth: CREDIT_CARD_INFO.expirationMonth,
+      expirationYear: CREDIT_CARD_INFO.expirationYear, 
+      success: function({card}) {
+        const token = card.token;
+        // // realizar pagamento
+        PagSeguroDirectPayment.onSenderHashReady(function({senderHash, status, message}){
+          if(status == 'error') {
+              console.log(message);
+              return false;
+          }
+    
+          var hash = senderHash;
+          const formData = new FormData();
+
+          formData.append('token', token);
+          formData.append('hash', hash);
+          formData.append('id', idProduct);
+
+          const URL =  "api/makePaymentWithCreditCard";
+          fetch(URL, {method : 'POST', body: formData})
+            .then((response) => response.json())
+            .then((response) => {
+              if(!response.error){
+                document.querySelector('.message').innerHTML = `
+                  Transação Efetuada com sucesso!
+                `;
+                return;
+              }
+              if(response.error){
+                document.querySelector('.message').innerHTML = `
+                  Informe um CEP! 
+                `;
+                return;
+              }
+              alert('Erro interno');
+            })
+        });
+
+      },
+      error: function(response) {
+        console.log(response);
+      },
+    });
+  }
+  
+  async makePaymentWithBoleto(idProduct){
+    const URL = "api/getSessionPayment";
+    const request = await fetch(URL);
+    const {id} = await request.json();
+    
+    PagSeguroDirectPayment.setSessionId(id);
+
+    PagSeguroDirectPayment.onSenderHashReady(function({senderHash, status, message}){
+      if(status == 'error') {
+          console.log(message);
+          return false;
+      }
+
+      var hash = senderHash;
+
+      const formData = new FormData();
+      formData.append('hash', hash);
+      formData.append('id', idProduct);
+
+      const URL =  "api/makePaymentWithBoleto";
+      fetch(URL, {method : 'POST', body: formData})
+        .then((response) => response.json())
+        .then(({error, link}) => {
+          if(!error){
+            document.querySelector('.messageBoleto').innerHTML = `
+              Transação Efetuada com sucesso!
+              <a target="blank" href="${link['0']}">Imprimir boleto</a>
+            `;
+            return;
+          }
+          if(error){
+            document.querySelector('.messageBoleto').innerHTML = `
+              Informe um CEP! 
+            `;
+            return;
+          }
+          alert('Erro interno');
+        })
+    });
+  }
+  
 }
 
 new productController();
